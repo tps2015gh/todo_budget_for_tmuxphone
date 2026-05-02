@@ -63,8 +63,11 @@ def index():
         if category in summary:
             summary[category] += value
             
+    # Check if report exists
+    report_exists = os.path.exists(os.path.join('reports', f'report_{active_day}.json'))
+            
     return render_template('index.html', todos=todos, budget=filtered_budget, summary=summary, 
-                           start_time=START_TIME, active_day=active_day, days=days)
+                           start_time=START_TIME, active_day=active_day, days=days, report_exists=report_exists)
 
 @app.route('/set_active_day', methods=['POST'])
 def set_active_day():

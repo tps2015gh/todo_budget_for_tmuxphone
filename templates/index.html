@@ -257,7 +257,14 @@
             <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <h3 style="margin: 0; font-size: 1rem; color: var(--primary-color);">📅 Day Management</h3>
-                    <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 4px;">{{ active_day }}</span>
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        {% if report_exists %}
+                            <span style="font-size: 0.7rem; background: var(--success-color); color: white; padding: 2px 6px; border-radius: 4px;">✅ CLOSED</span>
+                        {% else %}
+                            <span style="font-size: 0.7rem; background: #f39c12; color: white; padding: 2px 6px; border-radius: 4px;">📂 OPEN</span>
+                        {% endif %}
+                        <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 4px;">{{ active_day }}</span>
+                    </div>
                 </div>
                 
                 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
@@ -276,7 +283,11 @@
                 </div>
                 
                 <form action="/close_day" method="post">
-                    <button type="submit" class="primary-btn" style="width: 100%; background: var(--success-color); font-size: 0.8rem; padding: 8px;" onclick="return confirm('Close day and generate report for ' + '{{ active_day }}' + '?')">🔒 Close Day & Generate Report</button>
+                    {% if report_exists %}
+                        <button type="submit" class="primary-btn" style="width: 100%; background: #27ae60; font-size: 0.8rem; padding: 8px;" onclick="return confirm('Update and re-close the report for ' + '{{ active_day }}' + '?')">🔄 Update & Re-close Report</button>
+                    {% else %}
+                        <button type="submit" class="primary-btn" style="width: 100%; background: var(--success-color); font-size: 0.8rem; padding: 8px;" onclick="return confirm('Close day and generate report for ' + '{{ active_day }}' + '?')">🔒 Close Day & Generate Report</button>
+                    {% endif %}
                 </form>
             </div>
 
