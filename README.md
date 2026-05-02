@@ -31,8 +31,8 @@ The app is designed for maximum portability and zero friction:
 ### Installation & Run
 1. **Clone the repository:**
    ```bash
-   git clone <your-github-repo-url>
-   cd todo-budget-manager
+   git clone https://github.com/tps2015gh/todo_budget_for_tmuxphone
+   cd todo_budget_for_tmuxphone
    ```
 2. **Setup Data Files:**
    The application expects `todo.json` and `budget.json` to exist. You can create them from the provided samples:
