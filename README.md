@@ -25,6 +25,20 @@ The app is designed for maximum portability and zero friction:
 ## 🏁 Quickstart
 
 ### Prerequisites
+
+#### For Android (The Recommended Way)
+1. **Install Termux:** Download and install [Termux from F-Droid](https://f-droid.org/en/packages/com.termux/) (the Play Store version is outdated).
+2. **Update Packages:**
+   ```bash
+   pkg update && pkg upgrade
+   ```
+3. **Install Dependencies:**
+   ```bash
+   pkg install python git
+   pip install flask
+   ```
+
+#### General
 - Python 3.x
 - Flask (`pip install flask`)
 
