@@ -274,6 +274,10 @@
                         <button type="submit" class="primary-btn" style="padding: 5px 10px; font-size: 0.8rem;">Add Day</button>
                     </form>
                 </div>
+                
+                <form action="/close_day" method="post">
+                    <button type="submit" class="primary-btn" style="width: 100%; background: var(--success-color); font-size: 0.8rem; padding: 8px;" onclick="return confirm('Close day and generate report for ' + '{{ active_day }}' + '?')">🔒 Close Day & Generate Report</button>
+                </form>
             </div>
 
             <div class="summary-grid">

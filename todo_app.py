@@ -95,6 +95,49 @@ def add_day():
             
     return redirect(url_for('index'))
 
+@app.route('/close_day', methods=['POST'])
+def close_day():
+    settings = get_settings()
+    active_day = settings.get('active_day')
+    budget = read_json(BUDGET_FILE)
+    
+    # Filter entries for the active day
+    day_entries = [entry for entry in budget if entry.get('date') == active_day]
+    
+    if not day_entries:
+        return redirect(url_for('index'))
+        
+    # Calculate summary
+    summary = {
+        'total': 0,
+        'money': 0,
+        'creditcard': 0,
+        'debt': 0
+    }
+    for entry in day_entries:
+        amount = float(entry.get('amount', 0))
+        val = amount if entry.get('type') == 'income' else -amount
+        summary['total'] += val
+        cat = entry.get('category')
+        if cat in summary:
+            summary[cat] += val
+            
+    # Create report
+    report = {
+        'date': active_day,
+        'summary': summary,
+        'entries': day_entries,
+        'closed_at': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    
+    if not os.path.exists('reports'):
+        os.makedirs('reports')
+        
+    report_path = os.path.join('reports', f'report_{active_day}.json')
+    write_json(report_path, report)
+    
+    return redirect(url_for('index'))
+
 # --- Todo Routes ---
 @app.route('/add', methods=['POST'])
 def add():
