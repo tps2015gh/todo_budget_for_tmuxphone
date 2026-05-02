@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Budget Entry</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-muted: #777;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 50px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin: 0 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: var(--primary-color);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #eee;
+            color: #333;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            line-height: 1.5;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Budget Entry</h1>
+
+        <form action="/update_budget/{{ entry.id }}" method="post">
+            <div class="form-group">
+                <div class="field">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" value="{{ entry.description }}" required>
+                </div>
+                <div class="field">
+                    <label for="amount">Amount (฿)</label>
+                    <input type="number" id="amount" name="amount" step="0.01" value="{{ entry.amount }}" required autofocus>
+                </div>
+                <div class="field">
+                    <label for="type">Type</label>
+                    <select id="type" name="type" required>
+                        <option value="expense" {% if entry.type == 'expense' %}selected{% endif %}>Credit (Expense)</option>
+                        <option value="income" {% if entry.type == 'income' %}selected{% endif %}>Debit (Income)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="money" {% if entry.category == 'money' %}selected{% endif %}>Money (เงินสด)</option>
+                        <option value="creditcard" {% if entry.category == 'creditcard' %}selected{% endif %}>Credit Card (บัตรเครดิต)</option>
+                        <option value="debt" {% if entry.category == 'debt' %}selected{% endif %}>Debt (หนี้)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="/" class="cancel-btn">Cancel</a>
+                <button type="submit" class="save-btn">Update Entry</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
