@@ -260,6 +260,7 @@
                     <div style="display: flex; gap: 5px; align-items: center;">
                         {% if report_exists %}
                             <span style="font-size: 0.7rem; background: var(--success-color); color: white; padding: 2px 6px; border-radius: 4px;">✅ CLOSED</span>
+                            <a href="/view_report/{{ active_day }}" style="font-size: 0.7rem; color: var(--primary-color); text-decoration: none; font-weight: bold; margin-left: 5px;">[View]</a>
                         {% else %}
                             <span style="font-size: 0.7rem; background: #f39c12; color: white; padding: 2px 6px; border-radius: 4px;">📂 OPEN</span>
                         {% endif %}

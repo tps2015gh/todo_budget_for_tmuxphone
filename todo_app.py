@@ -141,6 +141,15 @@ def close_day():
     
     return redirect(url_for('index'))
 
+@app.route('/view_report/<date>')
+def view_report(date):
+    report_path = os.path.join('reports', f'report_{date}.json')
+    if os.path.exists(report_path):
+        with open(report_path, 'r') as f:
+            report = json.load(f)
+        return render_template('report_view.html', report=report)
+    return redirect(url_for('index'))
+
 # --- Todo Routes ---
 @app.route('/add', methods=['POST'])
 def add():

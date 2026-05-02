@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Report - {{ report.date }}</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-muted: #777;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; color: var(--primary-color); }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            padding: 15px;
+            background: #f9fbff;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #eef2f7;
+        }
+
+        .label { font-size: 0.8rem; color: var(--text-muted); display: block; }
+        .value { font-size: 1.1rem; font-weight: bold; }
+        .positive { color: var(--success-color); }
+        .negative { color: var(--danger-color); }
+
+        .list { list-style: none; padding: 0; }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .item:last-child { border-bottom: none; }
+        .item-info { flex: 1; }
+        .item-amount { font-weight: bold; margin-left: 10px; }
+        .meta { font-size: 0.8rem; color: var(--text-muted); }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back</a>
+            <h1>Report: {{ report.date }}</h1>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <span class="label">Total</span>
+                <span class="value {{ 'positive' if report.summary.total >= 0 else 'negative' }}">฿{{ "%.2f"|format(report.summary.total) }}</span>
+            </div>
+            <div class="summary-card">
+                <span class="label">Money</span>
+                <span class="value {{ 'positive' if report.summary.money >= 0 else 'negative' }}">฿{{ "%.2f"|format(report.summary.money) }}</span>
+            </div>
+            <div class="summary-card">
+                <span class="label">Credit Card</span>
+                <span class="value {{ 'negative' if report.summary.creditcard < 0 else '' }}">฿{{ "%.2f"|format(report.summary.creditcard) }}</span>
+            </div>
+            <div class="summary-card">
+                <span class="label">Debt</span>
+                <span class="value {{ 'negative' if report.summary.debt < 0 else '' }}">฿{{ "%.2f"|format(report.summary.debt) }}</span>
+            </div>
+        </div>
+
+        <h3>Transactions</h3>
+        <div class="list">
+            {% for entry in report.entries %}
+                <div class="item">
+                    <div class="item-info">
+                        <div>{{ entry.description or 'No description' }}</div>
+                        <div class="meta">{{ entry.category|capitalize }}</div>
+                    </div>
+                    <div class="item-amount {{ 'positive' if entry.type == 'income' else 'negative' }}">
+                        {{ '+' if entry.type == 'income' else '-' }}฿{{ "%.2f"|format(entry.amount) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            Closed at: {{ report.closed_at }}
+        </div>
+    </div>
+</body>
+</html>
