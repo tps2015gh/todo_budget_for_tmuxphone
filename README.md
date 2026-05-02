@@ -27,7 +27,7 @@ The app is designed for maximum portability and zero friction:
 ### Prerequisites
 
 #### For Android (The Recommended Way)
-1. **Install Termux:** Download and install [Termux from F-Droid](https://f-droid.org/en/packages/com.termux/) (the Play Store version is outdated).
+1. **Install Termux:** Search for and install **Termux** from the Google Play Store.
 2. **Update Packages:**
    ```bash
    pkg update && pkg upgrade
