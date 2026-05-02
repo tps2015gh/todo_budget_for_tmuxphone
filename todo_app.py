@@ -8,28 +8,44 @@ app = Flask(__name__)
 
 TODO_FILE = 'todo.json'
 BUDGET_FILE = 'budget.json'
+SETTINGS_FILE = 'settings.json'
 
 START_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def read_json(file_path):
     if not os.path.exists(file_path):
-        return []
+        return [] if 'settings' not in file_path else {}
     with open(file_path, 'r') as f:
         try:
             return json.load(f)
         except json.JSONDecodeError:
-            return []
+            return [] if 'settings' not in file_path else {}
 
 def write_json(file_path, data):
     with open(file_path, 'w') as f:
         json.dump(data, f, indent=4)
 
+def get_settings():
+    settings = read_json(SETTINGS_FILE)
+    if not settings:
+        settings = {'active_day': datetime.now().strftime("%Y-%m-%d")}
+        write_json(SETTINGS_FILE, settings)
+    return settings
+
 @app.route('/')
 def index():
     todos = read_json(TODO_FILE)
     budget = read_json(BUDGET_FILE)
+    settings = get_settings()
+    active_day = settings.get('active_day')
     
-    # Calculate balances
+    # Get unique days for selection
+    days = sorted(list(set([entry.get('date', active_day) for entry in budget] + [active_day])), reverse=True)
+    
+    # Filter budget by active day
+    filtered_budget = [entry for entry in budget if entry.get('date', active_day) == active_day]
+    
+    # Calculate balances for the active day
     summary = {
         'total': 0,
         'money': 0,
@@ -37,7 +53,7 @@ def index():
         'debt': 0
     }
     
-    for entry in budget:
+    for entry in filtered_budget:
         amount = float(entry.get('amount', 0))
         entry_type = entry.get('type') # 'income' or 'expense'
         category = entry.get('category') # 'money', 'creditcard', 'debt'
@@ -47,7 +63,37 @@ def index():
         if category in summary:
             summary[category] += value
             
-    return render_template('index.html', todos=todos, budget=budget, summary=summary, start_time=START_TIME)
+    return render_template('index.html', todos=todos, budget=filtered_budget, summary=summary, 
+                           start_time=START_TIME, active_day=active_day, days=days)
+
+@app.route('/set_active_day', methods=['POST'])
+def set_active_day():
+    day = request.form.get('day')
+    if day:
+        settings = get_settings()
+        settings['active_day'] = day
+        write_json(SETTINGS_FILE, settings)
+    return redirect(url_for('index'))
+
+@app.route('/add_day', methods=['POST'])
+def add_day():
+    new_day = request.form.get('new_day')
+    if new_day:
+        settings = get_settings()
+        settings['active_day'] = new_day
+        write_json(SETTINGS_FILE, settings)
+        
+        # Ensure any items without a date get this new date assigned
+        budget = read_json(BUDGET_FILE)
+        updated = False
+        for entry in budget:
+            if 'date' not in entry:
+                entry['date'] = new_day
+                updated = True
+        if updated:
+            write_json(BUDGET_FILE, budget)
+            
+    return redirect(url_for('index'))
 
 # --- Todo Routes ---
 @app.route('/add', methods=['POST'])
@@ -109,12 +155,14 @@ def execute_move(todo_id):
             
             # Add to budget
             budget = read_json(BUDGET_FILE)
+            settings = get_settings()
             new_entry = {
                 'id': str(uuid.uuid4()),
                 'amount': float(amount),
                 'type': entry_type,
                 'category': category,
-                'description': description
+                'description': description,
+                'date': settings.get('active_day')
             }
             budget.append(new_entry)
             write_json(BUDGET_FILE, budget)
@@ -131,12 +179,14 @@ def add_budget():
     
     if amount and entry_type and category:
         budget = read_json(BUDGET_FILE)
+        settings = get_settings()
         new_entry = {
             'id': str(uuid.uuid4()),
             'amount': float(amount),
             'type': entry_type,
             'category': category,
-            'description': description
+            'description': description,
+            'date': settings.get('active_day')
         }
         budget.append(new_entry)
         write_json(BUDGET_FILE, budget)

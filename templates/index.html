@@ -254,6 +254,28 @@
 
         <!-- Budget Tab -->
         <div id="budget-tab" class="tab-content">
+            <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="margin: 0; font-size: 1rem; color: var(--primary-color);">📅 Day Management</h3>
+                    <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 4px;">{{ active_day }}</span>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <form action="/set_active_day" method="post" style="flex: 1; display: flex; gap: 5px;">
+                        <select name="day" onchange="this.form.submit()" style="flex: 1; padding: 5px;">
+                            {% for day in days %}
+                                <option value="{{ day }}" {% if day == active_day %}selected{% endif %}>{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                    
+                    <form action="/add_day" method="post" style="flex: 1; display: flex; gap: 5px;">
+                        <input type="date" name="new_day" required style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="submit" class="primary-btn" style="padding: 5px 10px; font-size: 0.8rem;">Add Day</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="summary-grid">
                 <div class="summary-card">
                     <span class="label">Total Balance</span>
