@@ -203,7 +203,8 @@
     <div class="container">
         <h1>Manager</h1>
         <p style="text-align: center; font-size: 0.9rem; color: #555; background: #eef2f7; padding: 10px; border-radius: 8px; border: 1px solid #d1d9e6; margin-bottom: 10px;">
-            🕒 <strong>Server started at:</strong> {{ start_time }}
+            🕒 <strong>Server started at:</strong> {{ start_time }}<br>
+            <small>เริ่มทำงานเมื่อ: <span id="thai-start-time"></span></small>
         </p>
         <div style="text-align: center; margin-bottom: 20px;">
             <a href="/task_logs" style="font-size: 0.9rem; color: var(--primary-color); text-decoration: none; font-weight: 600;">📁 View Completed Task Logs</a>
@@ -386,12 +387,25 @@
             localStorage.setItem('activeTab', tabName);
         }
 
-        // Restore tab state
+        // Restore tab state and populate Thai Label
         window.onload = function() {
             const activeTab = localStorage.getItem('activeTab');
             if (activeTab) {
                 const event = { currentTarget: document.querySelector(`button[onclick*="${activeTab}"]`) };
                 if (event.currentTarget) openTab(event, activeTab);
+            }
+
+            // Populate Thai Label
+            const startTime = "{{ start_time }}";
+            if (startTime) {
+                const parts = startTime.split(' ');
+                if (parts.length === 2) {
+                    const dateParts = parts[0].split('-');
+                    const timeParts = parts[1].split(':');
+                    const year = parseInt(dateParts[0]) + 543;
+                    const thaiLabel = `${dateParts[2]}/${dateParts[1]}/${year} ${timeParts[0]}:${timeParts[1]} น.`;
+                    document.getElementById('thai-start-time').innerText = thaiLabel;
+                }
             }
         };
     </script>
