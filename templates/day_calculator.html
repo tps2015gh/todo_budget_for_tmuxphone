@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Calculator - {{ date }}</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-muted: #777;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 80px; /* Space for sticky footer */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        h1 { margin: 0; font-size: 1.5rem; color: var(--primary-color); }
+
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .total-box { font-size: 1.2rem; font-weight: bold; }
+
+        .list { list-style: none; padding: 0; }
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .item:hover { background: #f9fbff; }
+        .item:last-child { border-bottom: none; }
+
+        .item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .item-info { flex: 1; }
+        .item-amount { font-weight: bold; margin-left: 10px; }
+        .meta { font-size: 0.8rem; color: var(--text-muted); }
+        .positive { color: var(--success-color); }
+        .negative { color: var(--danger-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back</a>
+            <h1>Calculator: {{ date }}</h1>
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center; margin-bottom: 20px;">
+            Select items to calculate their combined total.
+        </p>
+
+        <div class="list">
+            {% if entries %}
+                {% for entry in entries %}
+                    <label class="item">
+                        <input type="checkbox" class="entry-checkbox" 
+                               data-amount="{{ entry.amount }}" 
+                               data-type="{{ entry.type }}">
+                        <div class="item-info">
+                            <div>{{ entry.description or 'No description' }}</div>
+                            <div class="meta">{{ entry.category|capitalize }}</div>
+                        </div>
+                        <div class="item-amount {{ 'positive' if entry.type == 'income' else 'negative' }}">
+                            {{ '+' if entry.type == 'income' else '-' }}฿{{ "%.2f"|format(entry.amount) }}
+                        </div>
+                    </label>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: var(--text-muted); padding: 20px;">No entries for this day.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="sticky-footer">
+        <div class="footer-content">
+            <div class="total-box">Selected Total: <span id="selected-total">฿0.00</span></div>
+            <button onclick="clearAll()" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">Clear All</button>
+        </div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.entry-checkbox');
+        const totalDisplay = document.getElementById('selected-total');
+
+        function calculate() {
+            let total = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const amount = parseFloat(cb.dataset.amount);
+                    const type = cb.dataset.type;
+                    if (type === 'income') {
+                        total += amount;
+                    } else {
+                        total -= amount;
+                    }
+                }
+            });
+            
+            const formattedTotal = (total >= 0 ? '฿' : '-฿') + Math.abs(total).toFixed(2);
+            totalDisplay.textContent = formattedTotal;
+            
+            // Visual feedback
+            if (total > 0) {
+                totalDisplay.style.color = '#fff';
+            } else if (total < 0) {
+                totalDisplay.style.color = '#ff9999';
+            } else {
+                totalDisplay.style.color = '#fff';
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', calculate);
+        });
+
+        function clearAll() {
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+            });
+            calculate();
+        }
+    </script>
+</body>
+</html>

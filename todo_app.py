@@ -151,6 +151,12 @@ def view_report(date):
         return render_template('report_view.html', report=report)
     return redirect(url_for('index'))
 
+@app.route('/day_calculator/<date>')
+def day_calculator(date):
+    budget = read_json(BUDGET_FILE)
+    day_entries = [entry for entry in budget if entry.get('date') == date]
+    return render_template('day_calculator.html', date=date, entries=day_entries)
+
 @app.route('/log_task/<todo_id>', methods=['POST'])
 def log_task(todo_id):
     todos = read_json(TODO_FILE)
