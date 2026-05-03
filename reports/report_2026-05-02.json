@@ -1,8 +1,8 @@
 {
     "date": "2026-05-02",
     "summary": {
-        "total": -885.0,
-        "money": -885.0,
+        "total": -1915.69,
+        "money": -1915.69,
         "creditcard": 0,
         "debt": 0
     },
@@ -62,7 +62,39 @@
             "category": "money",
             "description": "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e21\u0e37\u0e2d\u0e0a\u0e48\u0e32\u0e07 120",
             "date": "2026-05-02"
+        },
+        {
+            "id": "57720115-410b-40c0-b041-9c512b4d6f72",
+            "amount": 95.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e01\u0e23\u0e30\u0e17\u0e34\u0e07\u0e41\u0e14\u0e07 1 pack ",
+            "date": "2026-05-02"
+        },
+        {
+            "id": "e059041f-f5a1-4ab3-a7c1-2cb1ea6e0bb1",
+            "amount": 150.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e02\u0e19\u0e21\u0e2d\u0e37\u0e48\u0e19\u0e46 \u0e1b\u0e23\u0e30\u0e21\u0e32\u0e13 150",
+            "date": "2026-05-02"
+        },
+        {
+            "id": "ca3acec5-aaec-4704-b726-1fb4bbc27986",
+            "amount": 583.69,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e04\u0e48\u0e32\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c \u0e41\u0e21\u0e48 xx9781",
+            "date": "2026-05-02"
+        },
+        {
+            "id": "143b8a15-4e6c-447d-9060-e6326ad25600",
+            "amount": 202.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e0b\u0e37\u0e49\u0e2d\u0e02\u0e19\u0e21\u0e40\u0e0b\u0e40\u0e27\u0e48\u0e19\u0e44\u0e2d\u0e15\u0e34\u0e21\u0e41\u0e25\u0e30\u0e19\u0e49\u0e33, \u0e27\u0e31\u0e19\u0e19\u0e35\u0e49\u0e19\u0e2d\u0e19\u0e04\u0e49\u0e32\u0e07\u0e1a\u0e49\u0e32\u0e19\u0e41\u0e21\u0e48",
+            "date": "2026-05-02"
         }
     ],
-    "closed_at": "2026-05-02 21:36:01"
+    "closed_at": "2026-05-03 07:55:39"
 }

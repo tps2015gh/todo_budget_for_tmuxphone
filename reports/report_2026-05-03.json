@@ -1,0 +1,68 @@
+{
+    "date": "2026-05-03",
+    "summary": {
+        "total": 13390.0,
+        "money": 14530.0,
+        "creditcard": -1140.0,
+        "debt": 0
+    },
+    "entries": [
+        {
+            "id": "7b4afb8a-7c71-4786-a26e-f4292439d05b",
+            "amount": 1140.0,
+            "type": "expense",
+            "category": "creditcard",
+            "description": "\u0e40\u0e15\u0e34\u0e21\u0e19\u0e49\u0e33\u0e21\u0e31\u0e19\u0e40\u0e0a\u0e25\u0e25\u0e4c \u0e1b\u0e31\u0e4a\u0e21\u0e43\u0e01\u0e25\u0e49\u0e1a\u0e49\u0e32\u0e19",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "a2edad8c-3c9e-4e30-9e12-6075858b2cb5",
+            "amount": 20000.0,
+            "type": "income",
+            "category": "money",
+            "description": "\u0e01\u0e14\u0e40\u0e07\u0e34\u0e19\u0e43\u0e2b\u0e49\u0e41\u0e21\u0e48 15000 \u0e2b\u0e23\u0e37\u0e2d 20000",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "3420d2ea-68ad-468c-8bdb-e3c77e2da7b3",
+            "amount": 5000.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e04\u0e37\u0e19\u0e40\u0e07\u0e34\u0e19\u0e43\u0e2b\u0e49\u0e41\u0e21\u0e48",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "1d3c77df-837f-4337-b597-e451adc38125",
+            "amount": 20.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e0a\u0e32",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "15860e7b-1a4e-4fe0-9a6f-2fd08d386d91",
+            "amount": 0.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e01\u0e34\u0e19\u0e02\u0e49\u0e32\u0e27\u0e40\u0e17\u0e35\u0e48\u0e22\u0e07 zen , west vill ,\u0e19\u0e35\u0e08\u0e48\u0e32\u0e22 300",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "a8b0a907-b429-4947-a48e-bf4a52294ab0",
+            "amount": 150.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e01\u0e23\u0e30\u0e14\u0e32\u0e29\u0e1b\u0e23\u0e34\u0e49\u0e19\u0e23\u0e39\u0e1b\u0e43\u0e2b\u0e49\u0e44\u0e17\u0e40\u0e01\u0e2d\u0e23\u0e4c, 1 \u0e41\u0e1e\u0e47\u0e04",
+            "date": "2026-05-03"
+        },
+        {
+            "id": "a2502728-7d78-45d1-8556-4d96a09cac60",
+            "amount": 300.0,
+            "type": "expense",
+            "category": "money",
+            "description": "\u0e15\u0e31\u0e14\u0e1c\u0e21 16:00 \u0e16\u0e36\u0e07\u0e23\u0e49\u0e32\u0e19",
+            "date": "2026-05-03"
+        }
+    ],
+    "closed_at": "2026-05-03 16:39:28"
+}

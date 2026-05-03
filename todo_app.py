@@ -9,6 +9,7 @@ app = Flask(__name__)
 TODO_FILE = 'todo.json'
 BUDGET_FILE = 'budget.json'
 SETTINGS_FILE = 'settings.json'
+TASK_LOG_FILE = 'task_log.json'
 
 START_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -149,6 +150,47 @@ def view_report(date):
             report = json.load(f)
         return render_template('report_view.html', report=report)
     return redirect(url_for('index'))
+
+@app.route('/log_task/<todo_id>', methods=['POST'])
+def log_task(todo_id):
+    todos = read_json(TODO_FILE)
+    todo_to_log = next((t for t in todos if t['id'] == todo_id), None)
+    
+    if todo_to_log:
+        # Remove from active todos
+        todos = [t for t in todos if t['id'] != todo_id]
+        write_json(TODO_FILE, todos)
+        
+        # Add to logs
+        task_logs = read_json(TASK_LOG_FILE)
+        settings = get_settings()
+        todo_to_log['date'] = settings.get('active_day')
+        todo_to_log['logged_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        task_logs.append(todo_to_log)
+        write_json(TASK_LOG_FILE, task_logs)
+        
+    return redirect(url_for('index'))
+
+@app.route('/task_logs')
+def task_logs():
+    logs = read_json(TASK_LOG_FILE)
+    
+    # Get parameters
+    date_filter = request.args.get('date')
+    search_query = request.args.get('q', '').lower()
+    
+    # Get unique dates for filter
+    available_dates = sorted(list(set([l.get('date') for l in logs if l.get('date')])), reverse=True)
+    
+    # Apply filters
+    filtered_logs = logs
+    if date_filter:
+        filtered_logs = [l for l in filtered_logs if l.get('date') == date_filter]
+    if search_query:
+        filtered_logs = [l for l in filtered_logs if search_query in l.get('description', '').lower()]
+    
+    return render_template('task_logs.html', logs=filtered_logs, available_dates=available_dates, 
+                           selected_date=date_filter, search_query=search_query)
 
 # --- Todo Routes ---
 @app.route('/add', methods=['POST'])
