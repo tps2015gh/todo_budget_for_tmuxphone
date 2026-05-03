@@ -2,6 +2,9 @@ __pycache__/
 *.pyc
 todo.json
 budget.json
+task_log.json
+settings.json
+reports/
 app-manager.skill
 .gemini/
 github_auth.html
